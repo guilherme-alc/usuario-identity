@@ -1,4 +1,10 @@
 
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+using UsuarioIdentity.Data;
+using UsuarioIdentity.Models;
+using UsuarioIdentity.Services;
+
 namespace UsuarioIdentity;
 
 public class Program
@@ -6,6 +12,19 @@ public class Program
     public static void Main(string[] args)
     {
         var builder = WebApplication.CreateBuilder(args);
+
+        var connString = builder.Configuration.GetConnectionString("UsuarioConnection");
+        builder.Services.AddDbContext<UsuarioDbContext>
+            (opts =>
+            {
+                opts.UseMySql(connString, ServerVersion.AutoDetect(connString));
+            });
+        builder.Services
+            .AddIdentity<Usuario, IdentityRole>()
+            .AddEntityFrameworkStores<UsuarioDbContext>()
+            .AddDefaultTokenProviders();
+        builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+        builder.Services.AddScoped<CadastroService>();
 
         // Add services to the container.
 
