@@ -8,7 +8,7 @@ namespace UsuarioIdentity.Services;
 
 public class TokenService
 {
-    internal void GenerateToken(Usuario usuario)
+    public string GenerateToken(Usuario usuario)
     {
 
         Claim[] claims = new Claim[]
@@ -18,7 +18,7 @@ public class TokenService
             new Claim(ClaimTypes.DateOfBirth, usuario.DataNascimento.ToString()),
         };
 
-        var chave = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("ASD91U9DJDASODI02FHDT"));
+        var chave = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("ASD91U9I02FHDTASDWASA29U4JF893N2D8W2112"));
 
         var signingCredentials = new SigningCredentials(chave, SecurityAlgorithms.HmacSha256);
 
@@ -28,5 +28,7 @@ public class TokenService
                 claims: claims,
                 signingCredentials: signingCredentials
             );
+
+        return new JwtSecurityTokenHandler().WriteToken(token);
     }
 }
