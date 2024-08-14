@@ -17,7 +17,7 @@ public class Program
     {
         var builder = WebApplication.CreateBuilder(args);
 
-        var connString = builder.Configuration.GetConnectionString("UsuarioConnection");
+        var connString = builder.Configuration["ConnectionStrings:UsuarioConnection"];
         builder.Services.AddDbContext<UsuarioDbContext>
             (opts =>
             {
@@ -44,7 +44,7 @@ public class Program
             options.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters
             {
                 ValidateIssuerSigningKey = true,
-                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("ASD91U9I02FHDTASDWASA29U4JF893N2D8W2112")),
+                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["SymmetricSecurityKey"])),
                 ValidateAudience = false,
                 ValidateIssuer = false,
                 ClockSkew = TimeSpan.Zero
